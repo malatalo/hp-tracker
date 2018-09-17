@@ -1,0 +1,8 @@
+html, body, #app, #app>div, #root {
+  height: 100%
+}
+
+html {
+  background: linear-gradient(60deg, #212121, #212121, #E53935,   #43A047,#1E88E5, #FFF8E1, #FFF8E1);
+  background-size: 100% 100%;
+}
