@@ -34,7 +34,7 @@ class HpTracker extends Component {
             ],
             playerCount: "2",
             stacking: "horizontal",
-            direction: "row",
+            direction: "row-reverse",
         }
     }
 
