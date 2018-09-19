@@ -2,7 +2,7 @@
   "name": "hp-tracker",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://miikka-alatalo.github.io/hp-tracker",
+  "homepage": "http://alamiikka.github.io/hp-tracker",
   "dependencies": {
     "@material-ui/core": "^3.0.3",
     "@material-ui/icons": "^3.0.1",
