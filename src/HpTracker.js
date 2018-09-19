@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import './HpTracker.css';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-
 import PlayerBox from './PlayerBox';
+import FormBelow from './FormBelow';
 
 const styles = theme => ({
     root: {
@@ -25,41 +23,58 @@ const styles = theme => ({
 
 class HpTracker extends Component {
 
-    componentWillMount = () => {
-        this.setState({
+    constructor(props) {
+        super(props);
+        this.state = {
             players: [
                 { "hp": 21 },
                 { "hp": 22 },
                 { "hp": 23 },
                 { "hp": 24 },
-            ]
-        })
-        this.handleSelection(null, { p: 2, d: "v" });
+            ],
+            playerCount: "2",
+            stacking: "horizontal",
+            direction: "row",
+        }
     }
 
-    handleSelection = (event, sel) => {
-        if (sel === null) return;
-        const playerWidth = sel.d === "v" ? 12 : sel.d === "h" && sel.p === 4 ? 3 : 6;
-        let paperHeight = "98%";
+    componentWillMount = () => {
+        this.reCalc();
+    }
 
-        if (sel.p === 4 && sel.d === "g") {
-            paperHeight = "48%";
-        } else if (sel.p === 2 && playerWidth === 6) {
-            paperHeight = "98%";
-        } else if (sel.p === 4 && playerWidth === 6) {
-            paperHeight = "48%";
-        } else if (sel.p === 2 && playerWidth === 12) {
-            paperHeight = "48%";
-        } else if (sel.p === 4 && playerWidth === 12) {
-            paperHeight = "23%";
+    reCalc = () => {
+        let pc = parseInt(this.state.playerCount, 10);
+        let st = this.state.stacking;
+
+        let paperHeight, paperWidth;
+
+        if (pc === 1) {
+            paperHeight = 98;
+            paperWidth = 12;
+        } else if (pc === 2) {
+            if (st === "horizontal") {
+                paperHeight = 48;
+                paperWidth = 12;
+            } else {
+                paperHeight = 98;
+                paperWidth = 6;
+            }
+        } else {
+            if (st === "vertical") {
+                paperHeight = 23;
+                paperWidth = 12;
+            } else if (st === "horizontal") {
+                paperHeight = 100;
+                paperWidth = 3;
+            } else {
+                paperHeight = 48;
+                paperWidth = 6
+            }
         }
 
         this.setState({
-            selection: sel,
-            playerWidth: playerWidth,
-            playerCount: sel.p,
+            paperWidth: paperWidth,
             paperHeight: paperHeight,
-            direction: sel.d,
         });
     }
 
@@ -67,6 +82,10 @@ class HpTracker extends Component {
         let players = [...this.state.players];
         players[id] = { ...players[id], hp: players[id].hp + amount };
         this.setState({ players });
+    }
+
+    handleForm = name => event => {
+        this.setState({ [name]: event.target.value }, () => this.reCalc());
     }
 
     render() {
@@ -77,12 +96,12 @@ class HpTracker extends Component {
                 <Grid container className={classes.bigbox}>
                     <Grid item xs={12}>
                         <Grid container spacing={16} className={classes.containerbox} alignItems={"center"} justify={"space-evenly"}>
-                            {[...Array(this.state.playerCount)].map((val, i) => (
+                            {[...Array(parseInt(this.state.playerCount, 10))].map((val, i) => (
                                 <PlayerBox key={i}
                                     id={i}
                                     player={this.state.players[i]}
                                     paperHeight={this.state.paperHeight}
-                                    playerWidth={this.state.playerWidth}
+                                    paperWidth={this.state.paperWidth}
                                     handleHPChange={this.handleHPChange}
                                     direction={this.state.direction} />
                             ))}
@@ -90,29 +109,12 @@ class HpTracker extends Component {
                     </Grid>
                 </Grid>
 
-                {/* Placeholder selector */}
-                <div className={classes.toggleContainer}>
-                    <ToggleButtonGroup value={this.state.selection} exclusive onChange={this.handleSelection}>
-                        <ToggleButton value={{ p: 2, d: "h" }}>
-                            2 horizontal
-                        </ToggleButton>
-                        <ToggleButton value={{ p: 4, d: "h" }}>
-                            4 horizontal
-                        </ToggleButton>
-                        <ToggleButton value={{ p: 2, d: "v" }}>
-                            2 vertical
-                         </ToggleButton>
-                        <ToggleButton value={{ p: 4, d: "v" }}>
-                            4 vertical
-                        </ToggleButton>
-                        <ToggleButton value={{ p: 4, d: "g" }}>
-                            4 h-grid
-                        </ToggleButton>
-                        <ToggleButton value={{ p: 4, d: "c" }}>
-                            4 v-grid
-                        </ToggleButton>
-                    </ToggleButtonGroup>
-                </div>
+                <FormBelow 
+                playerCount={this.state.playerCount} 
+                stacking={this.state.stacking} 
+                direction={this.state.direction} 
+                handleForm={this.handleForm} />
+
             </div>
         );
     }
