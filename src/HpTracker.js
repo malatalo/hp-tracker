@@ -27,10 +27,10 @@ class HpTracker extends Component {
         super(props);
         this.state = {
             players: [
-                { "hp": 21 },
-                { "hp": 22 },
-                { "hp": 23 },
-                { "hp": 24 },
+                { "hp": 20 },
+                { "hp": 20 },
+                { "hp": 20 },
+                { "hp": 20 },
             ],
             playerCount: "2",
             stacking: "horizontal",
@@ -80,7 +80,14 @@ class HpTracker extends Component {
 
     handleHPChange = (id, amount) => {
         let players = [...this.state.players];
-        players[id] = { ...players[id], hp: players[id].hp + amount };
+        if (id === 99) {
+            players.map((p, i) => {
+                players[i] = { ...players[i], hp: amount };
+            })
+        } else {
+            players[id] = { ...players[id], hp: players[id].hp + amount };
+        }
+
         this.setState({ players });
     }
 
@@ -109,15 +116,16 @@ class HpTracker extends Component {
                     </Grid>
                 </Grid>
 
-                <FormBelow 
-                playerCount={this.state.playerCount} 
-                stacking={this.state.stacking} 
-                direction={this.state.direction} 
-                handleForm={this.handleForm} />
+                <FormBelow
+                    playerCount={this.state.playerCount}
+                    stacking={this.state.stacking}
+                    direction={this.state.direction}
+                    handleForm={this.handleForm}
+                    handleHPChange={this.handleHPChange} />
 
             </div>
-        );
+            );
+        }
     }
-}
-
+    
 export default withStyles(styles)(HpTracker);
