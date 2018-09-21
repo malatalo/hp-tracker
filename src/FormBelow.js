@@ -58,7 +58,13 @@ class FormBelow extends Component {
         } else {
             this.setState({ [name]: event.target.value });
         }
-    };
+    }
+
+    _handleKeyPress = e => {
+        if (e && e.key === 'Enter') {
+            this.resetHP();
+        }
+    }
 
     resetHP = () => {
         let hp = this.state.hpSelect === 0 ? parseInt(this.state.customHP, 10) : this.state.hpSelect;
@@ -123,11 +129,11 @@ class FormBelow extends Component {
                     </Grid>
                     <Grid item xs={12}>{/* O:) */}</Grid>
 
-                    <Grid container direction="row" justify="center" alignItems="flex-start" className={classes.container} style={{height: 300}}>
+                    <Grid container direction="row" justify="center" alignItems="flex-start" className={classes.container} style={{ height: 300 }}>
                         <Grid item xs={3}>
                             <Grid container direction="column" justify="center" alignItems="flex-start" className={classes.container}>
                                 <Grid item xs={12}>
-                                    <FormControl component="fieldset" style={{marginLeft: "8px"}}>
+                                    <FormControl component="fieldset" style={{ marginLeft: "8px" }}>
                                         <InputLabel shrink htmlFor="hpSelect">
                                             Reset HP
                                         </InputLabel>
@@ -136,7 +142,7 @@ class FormBelow extends Component {
                                             value={this.state.hpSelect}
                                             onChange={this.handleChange('hpSelect')}
                                             input={<Input name="hpSelect" id="hp-helper" />}
-                                            >
+                                        >
                                             <MenuItem value={20}>20</MenuItem>
                                             <MenuItem value={30}>30</MenuItem>
                                             <MenuItem value={40}>40</MenuItem>
@@ -152,7 +158,8 @@ class FormBelow extends Component {
                                             className={classes.textField}
                                             value={this.state.customHP}
                                             onChange={this.handleChange('customHP')}
-                                            />
+                                            onKeyPress={this._handleKeyPress}
+                                        />
                                     </Grid>
                                     :
                                     null
