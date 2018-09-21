@@ -56,9 +56,8 @@ class PlayerBox extends Component {
     }
 
     rotateText = () => {
-        let r = this.state.rotate + 90;
-        if (r > 270) r = 0;
-        this.setState({ rotate: r });
+        let rotate = this.state.rotate + 90 > 270 ? 0 : this.state.rotate + 90;
+        this.setState({ rotate });
     }
 
     render() {

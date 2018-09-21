@@ -9,6 +9,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import { Typography } from '@material-ui/core';
 
 import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Select from '@material-ui/core/Select';
@@ -38,8 +39,7 @@ const styles = theme => ({
         margin: theme.spacing.unit,
     },
     hpReset: {
-        height: 200,
-        margin: '1%',
+        marginTop: "15px",
     }
 });
 
@@ -61,7 +61,7 @@ class FormBelow extends Component {
     };
 
     resetHP = () => {
-        let hp = this.state.hpSelect === 0 ? parseInt(this.state.customHP) : this.state.hpSelect;
+        let hp = this.state.hpSelect === 0 ? parseInt(this.state.customHP, 10) : this.state.hpSelect;
         this.props.handleHPChange(99, hp);
     }
 
@@ -123,40 +123,50 @@ class FormBelow extends Component {
                     </Grid>
                     <Grid item xs={12}>{/* O:) */}</Grid>
 
-                    <Grid container direction="row" justify="center" alignItems="flex-start" className={classes.container}>
-                        <Grid item xs="auto" className={classes.hpReset}>
-                            <Select
-                                className={classes.select}
-                                value={this.state.hpSelect}
-                                onChange={this.handleChange('hpSelect')}
-                                input={<Input name="hpSelect" id="hp-helper" />}
-                            >
-                                <MenuItem value={20}>20</MenuItem>
-                                <MenuItem value={30}>30</MenuItem>
-                                <MenuItem value={40}>40</MenuItem>
-                                <MenuItem value={0}>Custom</MenuItem>
-                            </Select>
-                            <FormHelperText>Reset HP</FormHelperText>
-                        </Grid>
-                        {this.state.hpSelect === 0 ?
-                            <Grid item xs="auto" className={classes.hpReset}>
-                                <TextField
-                                    label="Custom HP"
-                                    type="text"
-                                    className={classes.textField}
-                                    value={this.state.customHP}
-                                    onChange={this.handleChange('customHP')}
-                                />
+                    <Grid container direction="row" justify="center" alignItems="flex-start" className={classes.container} style={{height: 300}}>
+                        <Grid item xs={3}>
+                            <Grid container direction="column" justify="center" alignItems="flex-start" className={classes.container}>
+                                <Grid item xs={12}>
+                                    <FormControl component="fieldset" style={{marginLeft: "8px"}}>
+                                        <InputLabel shrink htmlFor="hpSelect">
+                                            Reset HP
+                                        </InputLabel>
+                                        <Select
+                                            className={classes.select}
+                                            value={this.state.hpSelect}
+                                            onChange={this.handleChange('hpSelect')}
+                                            input={<Input name="hpSelect" id="hp-helper" />}
+                                            >
+                                            <MenuItem value={20}>20</MenuItem>
+                                            <MenuItem value={30}>30</MenuItem>
+                                            <MenuItem value={40}>40</MenuItem>
+                                            <MenuItem value={0}>Custom</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                {this.state.hpSelect === 0 ?
+                                    <Grid item xs={12} className={classes.hpReset}>
+                                        <TextField
+                                            label="Custom HP"
+                                            type="text"
+                                            className={classes.textField}
+                                            value={this.state.customHP}
+                                            onChange={this.handleChange('customHP')}
+                                            />
+                                    </Grid>
+                                    :
+                                    null
+                                }
+                                <Grid item xs={12} className={classes.hpReset}>
+                                    <Button variant="outlined" color="primary" className={classes.button}
+                                        onClick={() => this.resetHP()}>
+                                        Reset HP
+                                    </Button>
+                                </Grid>
                             </Grid>
-                            :
-                            null
-                        }
-                        <Grid item xs="auto" className={classes.hpReset}>
-                            <Button variant="contained" color="primary" className={classes.button}
-                                onClick={() => this.resetHP()}>
-                                Reset HP
-                            </Button>
                         </Grid>
+                        <Grid item xs={3}></Grid>
+                        <Grid item xs={3}></Grid>
                     </Grid>
                 </Grid>
             </div>

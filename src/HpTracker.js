@@ -52,7 +52,7 @@ class HpTracker extends Component {
             paperHeight = 98;
             paperWidth = 12;
         } else if (pc === 2) {
-            if (st === "horizontal") {
+            if (st === "vertical") {
                 paperHeight = 48;
                 paperWidth = 12;
             } else {
@@ -81,9 +81,9 @@ class HpTracker extends Component {
     handleHPChange = (id, amount) => {
         let players = [...this.state.players];
         if (id === 99) {
-            players.map((p, i) => {
-                players[i] = { ...players[i], hp: amount };
-            })
+            players.map((p, i) => 
+                players[i] = { ...players[i], hp: amount }
+            )
         } else {
             players[id] = { ...players[id], hp: players[id].hp + amount };
         }
@@ -92,7 +92,11 @@ class HpTracker extends Component {
     }
 
     handleForm = name => event => {
-        this.setState({ [name]: event.target.value }, () => this.reCalc());
+        if(this.state.stacking === "grid" && name === "playerCount" && event.target.value === "2") {
+            this.setState({ stacking: "horizontal", [name]: event.target.value }, () => this.reCalc());
+        } else {
+            this.setState({ [name]: event.target.value }, () => this.reCalc());
+        }
     }
 
     render() {
